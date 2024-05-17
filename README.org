@@ -24,7 +24,7 @@ Casual Avy has been verified with the following configuration.
 As Casual Avy is new, we are looking for early adopters! Your [[https://github.com/kickingvegas/casual-avy/discussions][feedback]] is welcome as it will likely impact Casual Avy's evolution, particularly with regards to UI.
 
 * Install
-If installed via MELPA then add these lines to your Emacs initialization file with your binding of preference. 
+If installed via MELPA (pending) then add these lines to your Emacs initialization file with your binding of preference. 
 #+begin_src elisp :lexical no
   (require 'casual-avy) ;; optional
   (keymap-global-set "M-g" #'casual-avy-tmenu)
