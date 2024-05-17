@@ -4,7 +4,7 @@
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
-;; Version: 0.1.0
+;; Version: 1.0.0
 ;; Package-Requires: ((emacs "29.1") (avy "0.5.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
