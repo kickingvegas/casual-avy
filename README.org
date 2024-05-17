@@ -1,5 +1,5 @@
 * Casual Avy
-An opinionated [[https://github.com/magit/transient][Transient]]-based meny for [[https://github.com/abo-abo/avy][Avy]], a GNU Emacs package for jumping to visible text using a char-based decision tree.
+An opinionated [[https://github.com/magit/transient][Transient]]-based menu for [[https://github.com/abo-abo/avy][Avy]], a GNU Emacs package for jumping to visible text using a char-based decision tree.
 
 [[file:docs/images/casual-avy-screenshot.png]]
 
