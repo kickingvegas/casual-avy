@@ -40,7 +40,7 @@ If you use ~use-package~, here is the recipe for installing it.
 Casual requires Emacs 29.1+.
 
 * Usage
-A number of Avy commands have the option to limit the scope of candidates to the visible part of the current buffer above or below the point. Such commands are denoted with the ‘↕︎’ symbol. Press ~a~ to limit the scope above the point, ~b~ for below.
+A number of Avy commands have the option to limit the scope of candidates to the visible part of the current buffer above or below the point. Such commands are denoted with the ‘⬍’ symbol. Press ~a~ to limit the scope above the point, ~b~ for below.
 
 The commands listed under *Edit Other Line/Region* can perform an operation on a visible line or region while keeping the point stationary. This enables a workflow where a different visible part of the Emacs frame can be operated on without having to move the point.
 

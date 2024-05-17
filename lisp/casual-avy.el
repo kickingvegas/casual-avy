@@ -5,7 +5,7 @@
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
 ;; Keywords: tools
-;; Version: 1.0.1
+;; Version: 1.0.2
 ;; Package-Requires: ((emacs "29.1") (avy "0.5.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -188,21 +188,21 @@ Always choose love."
 ;;;###autoload (autoload 'casual-avy-tmenu "casual-avy" nil t)
 (transient-define-prefix casual-avy-tmenu ()
   "Casual Avy Transient menu."
-  ["Option (applies to ↕︎)"
+  ["Option (applies to ⬍)"
    :class transient-row
    ("a" "Above" "--above")
    ("b" "Below" "--below")]
   [["Goto Thing"
     ("c" "Character" avy-goto-char-timer :transient nil)
-    ("2" "2 Characters ↕︎" ca-avy-goto-char-2 :transient nil)
-    ("w" "Word ↕︎" ca-avy-goto-word-1 :transient nil)
-    ("s" "Symbol ↕︎" ca-avy-goto-symbol-1 :transient nil)
-    ("W" "Whitespace end ↕︎" ca-avy-goto-whitespace-end :transient nil)
+    ("2" "2 Characters ⬍" ca-avy-goto-char-2 :transient nil)
+    ("w" "Word ⬍" ca-avy-goto-word-1 :transient nil)
+    ("s" "Symbol ⬍" ca-avy-goto-symbol-1 :transient nil)
+    ("W" "Whitespace end ⬍" ca-avy-goto-whitespace-end :transient nil)
     ("p" "Pop mark" avy-pop-mark :transient nil)]
 
    ["Goto Line"
     :pad-keys t
-    ("l" "Line ↕︎" ca-avy-goto-line :transient nil)
+    ("l" "Line ⬍" ca-avy-goto-line :transient nil)
     ("e" "End of line" avy-goto-end-of-line :transient nil)
     ("o" "Org heading" avy-org-goto-heading-timer
      :if ca-org-mode-p
