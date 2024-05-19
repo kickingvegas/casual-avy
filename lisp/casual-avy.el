@@ -65,9 +65,9 @@ when appropriate."
 - KEY symbol used to lookup Unicode symbol in DB.
 - DB alist containing Unicode symbols used by Info Transient menus.
 
-If DB is nil, then `casual-avyinfo-unicode-db' is used by default.
+If DB is nil, then `casual-avy-unicode-db' is used by default.
 
-If the value of customizable variable `cchoi-use-unicode-symbols'
+If the value of customizable variable `casual-avy-use-unicode-symbols'
 is non-nil, then the Unicode symbol is returned, otherwise a
 plain ASCII-range string."
   (let* ((db (or db casual-avy-unicode-db))
