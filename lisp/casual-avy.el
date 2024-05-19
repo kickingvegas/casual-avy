@@ -37,6 +37,46 @@
 (require 'org)
 (require 'casual-avy-version)
 
+(defcustom casual-avy-use-unicode-symbols nil
+  "If non-nil then use Unicode symbols whenever appropriate for labels."
+  :type 'boolean
+  :group 'avy)
+
+(defconst casual-avy-unicode-db
+  '((:scope . '("⬍" "#")))
+  "Unicode symbol DB to use for Info Transient menus.")
+
+(defun casual-avy--customize-casual-avy-use-unicode-symbols ()
+  "Customize `casual-avy-use-unicode-symbols'.
+
+Customize Casual Avy to use Unicode symbols in place of strings
+when appropriate."
+  (interactive)
+  (customize-variable 'casual-avy-use-unicode-symbols))
+
+(defun casual-avy--customize-avy-group ()
+  "Call the Avy customization group."
+  (interactive)
+  (customize-group "avy"))
+
+(defun casual-avy-unicode-db-get (key &optional db)
+  "Lookup Unicode symbol for KEY in DB.
+
+- KEY symbol used to lookup Unicode symbol in DB.
+- DB alist containing Unicode symbols used by Info Transient menus.
+
+If DB is nil, then `casual-avy-unicode-db' is used by default.
+
+If the value of customizable variable `casual-avy-use-unicode-symbols'
+is non-nil, then the Unicode symbol is returned, otherwise a
+plain ASCII-range string."
+  (let* ((db (or db casual-avy-unicode-db))
+         (unicode casual-avy-use-unicode-symbols)
+         (item (alist-get key db)))
+    (if unicode
+        (nth 0 (eval item))
+      (nth 1 (eval item)))))
+
 (defun casual-avy-display-line-numbers-mode-p ()
   "Predicate to test if `display-line-numbers-mode' is enabled."
   (symbol-value display-line-numbers))
@@ -60,7 +100,7 @@
 - T-ARGS list of options which can include ‘--above’, ‘--below’
 
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
-treated implictly as if neither were specified."
+treated as if neither were specified."
   (let ((t-args (if (not t-args)
                     (transient-args transient-current-command)
                   t-args)))
@@ -93,7 +133,7 @@ Given the value of T-ARGS, one of the following functions will be called:
 • `avy-goto-line-below' (--below)
 
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
-treated implictly as if neither were specified."
+treated as if neither were specified."
   (interactive)
   (casual-avy-select-above-below "avy-goto-line" t-args))
 
@@ -108,7 +148,7 @@ Given the value of T-ARGS, one of the following functions will be called:
 • `avy-goto-word-1-below' (--below)
 
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
-treated implictly as if neither were specified."
+treated as if neither were specified."
   (interactive)
   (casual-avy-select-above-below "avy-goto-word-1" t-args))
 
@@ -123,7 +163,7 @@ Given the value of T-ARGS, one of the following functions will be called:
 • `avy-goto-symbol-1-below' (--below)
 
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
-treated implictly as if neither were specified."
+treated as if neither were specified."
   (interactive)
   (casual-avy-select-above-below "avy-goto-symbol-1" t-args))
 
@@ -138,7 +178,7 @@ Given the value of T-ARGS, one of the following functions will be called:
 • `avy-goto-whitespace-end-below' (--below)
 
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
-treated implictly as if neither were specified."
+treated as if neither were specified."
   (interactive)
   (casual-avy-select-above-below "avy-goto-whitespace-end" t-args))
 
@@ -153,7 +193,7 @@ Given the value of T-ARGS, one of the following functions will be called:
 • `avy-goto-char-2-below' (--below)
 
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
-treated implictly as if neither were specified."
+treated as if neither were specified."
   (interactive)
   (casual-avy-select-above-below "avy-goto-char-2" t-args))
 
@@ -188,21 +228,44 @@ Always choose love."
 ;;;###autoload (autoload 'casual-avy-tmenu "casual-avy" nil t)
 (transient-define-prefix casual-avy-tmenu ()
   "Casual Avy Transient menu."
-  ["Option (applies to ⬍)"
+  ["Scope (applies to ⬍)"
+   :description (lambda ()
+                  (format "Scope (applies to (%s))"
+                          (casual-avy-unicode-db-get :scope)))
    :class transient-row
    ("a" "Above" "--above")
    ("b" "Below" "--below")]
   [["Goto Thing"
     ("c" "Character" avy-goto-char-timer :transient nil)
-    ("2" "2 Characters ⬍" casual-avy-avy-goto-char-2 :transient nil)
-    ("w" "Word ⬍" casual-avy-avy-goto-word-1 :transient nil)
-    ("s" "Symbol ⬍" casual-avy-avy-goto-symbol-1 :transient nil)
-    ("W" "Whitespace end ⬍" casual-avy-avy-goto-whitespace-end :transient nil)
+    ("2" "2 Characters ⬍" casual-avy-avy-goto-char-2
+     :description (lambda ()
+                    (format "2 Characters (%s)"
+                            (casual-avy-unicode-db-get :scope)))
+     :transient nil)
+    ("w" "Word ⬍" casual-avy-avy-goto-word-1
+     :description (lambda ()
+                    (format "Word (%s)"
+                            (casual-avy-unicode-db-get :scope)))
+     :transient nil)
+    ("s" "Symbol ⬍" casual-avy-avy-goto-symbol-1
+     :description (lambda ()
+                    (format "Symbol (%s)"
+                            (casual-avy-unicode-db-get :scope)))
+     :transient nil)
+    ("W" "Whitespace end ⬍" casual-avy-avy-goto-whitespace-end
+     :description (lambda ()
+                    (format "Whitespace end (%s)"
+                            (casual-avy-unicode-db-get :scope)))
+     :transient nil)
     ("p" "Pop mark" avy-pop-mark :transient nil)]
 
    ["Goto Line"
     :pad-keys t
-    ("l" "Line ⬍" casual-avy-avy-goto-line :transient nil)
+    ("l" "Line ⬍" casual-avy-avy-goto-line
+     :description (lambda ()
+                    (format "Line (%s)"
+                            (casual-avy-unicode-db-get :scope)))
+     :transient nil)
     ("e" "End of line" avy-goto-end-of-line :transient nil)
     ("o" "Org heading" avy-org-goto-heading-timer
      :if casual-avy-org-mode-p
@@ -239,6 +302,17 @@ Always choose love."
      :transient nil)]
 
   [:class transient-row
+          ("," "Settings›" casual-avy-settings-tmenu :transient nil)
+          ("q" "Dismiss" ignore :transient transient--do-exit)])
+
+(transient-define-prefix casual-avy-settings-tmenu ()
+  ["Customize"
+   ("u" "Use Unicode Symbols"
+    casual-avy--customize-casual-avy-use-unicode-symbols)
+   ("A" "Customize Avy Group" casual-avy--customize-avy-group)]
+
+  [:class transient-row
+          ("a" "About" casual-avy-about :transient nil)
           ("v" "Version" casual-avy-version :transient nil)
           ("q" "Dismiss" ignore :transient transient--do-exit)])
 

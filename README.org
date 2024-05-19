@@ -19,6 +19,7 @@ While highly functional, Avy has a steep learning curve as it has a very diverse
 
 Casual Avy has been verified with the following configuration. 
 - Emacs 29.3 (macOS 14.4.1, Ubuntu Linux 22.04.4 LTS)
+- Avy 0.5.0
 
 * Asks
 As Casual Avy is new, we are looking for early adopters! Your [[https://github.com/kickingvegas/casual-avy/discussions][feedback]] is welcome as it will likely impact Casual Avy's evolution, particularly with regards to UI.
@@ -40,7 +41,7 @@ If you use ~use-package~, here is the recipe for installing it.
 Casual requires Emacs 29.1+.
 
 * Usage
-A number of Avy commands have the option to limit the scope of candidates to the visible part of the current buffer above or below the point. Such commands are denoted with the ‘⬍’ symbol. Press ~a~ to limit the scope above the point, ~b~ for below.
+A number of Avy commands have the option to limit the scope of candidates to the visible part of the current buffer above or below the point. Such commands are denoted with the ‘#’ or ‘⬍’ symbol. Press ~a~ to limit the scope above the point, ~b~ for below.
 
 The commands listed under *Edit Other Line/Region* can perform an operation on a visible line or region while keeping the point stationary. This enables a workflow where a different visible part of the Emacs frame can be operated on without having to move the point.
 
@@ -52,6 +53,13 @@ The following glossary details the meaning of the menu labels.
 | Kill                            | Kills the selected object into the kill ring.                       |
 | Move to above current line      | Moves the selected object to the line above the current point.      |
 | Duplicate to above current line | Duplicates the selected object to the line above the current point. |
+
+** Unicode Symbol Support
+By enabling “Use Unicode Symbols” from the Settings menu, Casual Avy will use Unicode symbols as appropriate in its menus. The following mapping is shown in the table below:
+
+| Name  | Plain | Unicode |
+|-------+-------+---------|
+| Scope | #     | ⬍        |
 
 * Common Menu Actions
 Casual Avy is built using Transient menus and as such adopts much of its default behavior.
