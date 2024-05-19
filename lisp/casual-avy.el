@@ -37,23 +37,23 @@
 (require 'org)
 (require 'casual-avy-version)
 
-(defun ca-display-line-numbers-mode-p ()
+(defun casual-avy-display-line-numbers-mode-p ()
   "Predicate to test if `display-line-numbers-mode' is enabled."
   (symbol-value display-line-numbers))
 
-(defun ca-org-mode-p ()
+(defun casual-avy-org-mode-p ()
   "Predicate to test if `org-mode' is enabled."
   (derived-mode-p 'org-mode))
 
-(defun ca-buffer-writeable-p ()
+(defun casual-avy-buffer-writeable-p ()
   "Predicate to test if buffer is writeable."
   (not buffer-read-only))
 
-(defun ca-buffer-writeable-and-region-active-p ()
+(defun casual-avy-buffer-writeable-and-region-active-p ()
   "Predicate to test if buffer is writeable and region is active."
-  (and (ca-buffer-writeable-p) (region-active-p)))
+  (and (casual-avy-buffer-writeable-p) (region-active-p)))
 
-(defun ca-select-above-below (avy-fname &optional t-args)
+(defun casual-avy-select-above-below (avy-fname &optional t-args)
   "Select Avy above or below function name AVY-FNAME given T-ARGS.
 
 - AVY-FNAME function name.
@@ -82,7 +82,7 @@ treated implictly as if neither were specified."
       (message "all")
       (call-interactively (intern avy-fname))))))
 
-(defun ca-avy-goto-line (&optional t-args)
+(defun casual-avy-avy-goto-line (&optional t-args)
   "Jump to a line start in current buffer using T-ARGS option.
 
 - T-ARGS list of options which can include ‘--above’, ‘--below’
@@ -95,9 +95,9 @@ Given the value of T-ARGS, one of the following functions will be called:
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
 treated implictly as if neither were specified."
   (interactive)
-  (ca-select-above-below "avy-goto-line" t-args))
+  (casual-avy-select-above-below "avy-goto-line" t-args))
 
-(defun ca-avy-goto-word-1 (&optional t-args)
+(defun casual-avy-avy-goto-word-1 (&optional t-args)
   "Jump to the currently visible char at a word start using T-ARGS option.
 
 - T-ARGS list of options which can include ‘--above’, ‘--below’
@@ -110,9 +110,9 @@ Given the value of T-ARGS, one of the following functions will be called:
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
 treated implictly as if neither were specified."
   (interactive)
-  (ca-select-above-below "avy-goto-word-1" t-args))
+  (casual-avy-select-above-below "avy-goto-word-1" t-args))
 
-(defun ca-avy-goto-symbol-1 (&optional t-args)
+(defun casual-avy-avy-goto-symbol-1 (&optional t-args)
   "Jump to the currently visible char at a symbol start using T-ARGS option.
 
 - T-ARGS list of options which can include ‘--above’, ‘--below’
@@ -125,9 +125,9 @@ Given the value of T-ARGS, one of the following functions will be called:
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
 treated implictly as if neither were specified."
   (interactive)
-  (ca-select-above-below "avy-goto-symbol-1" t-args))
+  (casual-avy-select-above-below "avy-goto-symbol-1" t-args))
 
-(defun ca-avy-goto-whitespace-end (&optional t-args)
+(defun casual-avy-avy-goto-whitespace-end (&optional t-args)
   "Jump to the end of a whitespace sequence using T-ARGS option.
 
 - T-ARGS list of options which can include ‘--above’, ‘--below’
@@ -140,9 +140,9 @@ Given the value of T-ARGS, one of the following functions will be called:
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
 treated implictly as if neither were specified."
   (interactive)
-  (ca-select-above-below "avy-goto-whitespace-end" t-args))
+  (casual-avy-select-above-below "avy-goto-whitespace-end" t-args))
 
-(defun ca-avy-goto-char-2 (&optional t-args)
+(defun casual-avy-avy-goto-char-2 (&optional t-args)
   "Jump to the currently visible char1 followed by char2 using T-ARGS option.
 
 - T-ARGS list of options which can include ‘--above’, ‘--below’
@@ -155,9 +155,9 @@ Given the value of T-ARGS, one of the following functions will be called:
 If T-ARGS includes both ‘--above’ and ‘--below’ then it is
 treated implictly as if neither were specified."
   (interactive)
-  (ca-select-above-below "avy-goto-char-2" t-args))
+  (casual-avy-select-above-below "avy-goto-char-2" t-args))
 
-(defun ca-about-avy ()
+(defun casual-avy-about-avy ()
   "Casual Avy is a Transient menu for Avy.
 
 Learn more about using Casual Avy at our discussion group on GitHub.
@@ -180,10 +180,10 @@ Thank you for using Casual Avy.
 Always choose love."
   (ignore))
 
-(defun ca-about ()
+(defun casual-avy-about ()
   "About information for Casual Avy."
   (interactive)
-  (describe-function #'ca-about-avy))
+  (describe-function #'casual-avy-about-avy))
 
 ;;;###autoload (autoload 'casual-avy-tmenu "casual-avy" nil t)
 (transient-define-prefix casual-avy-tmenu ()
@@ -194,48 +194,48 @@ Always choose love."
    ("b" "Below" "--below")]
   [["Goto Thing"
     ("c" "Character" avy-goto-char-timer :transient nil)
-    ("2" "2 Characters ⬍" ca-avy-goto-char-2 :transient nil)
-    ("w" "Word ⬍" ca-avy-goto-word-1 :transient nil)
-    ("s" "Symbol ⬍" ca-avy-goto-symbol-1 :transient nil)
-    ("W" "Whitespace end ⬍" ca-avy-goto-whitespace-end :transient nil)
+    ("2" "2 Characters ⬍" casual-avy-avy-goto-char-2 :transient nil)
+    ("w" "Word ⬍" casual-avy-avy-goto-word-1 :transient nil)
+    ("s" "Symbol ⬍" casual-avy-avy-goto-symbol-1 :transient nil)
+    ("W" "Whitespace end ⬍" casual-avy-avy-goto-whitespace-end :transient nil)
     ("p" "Pop mark" avy-pop-mark :transient nil)]
 
    ["Goto Line"
     :pad-keys t
-    ("l" "Line ⬍" ca-avy-goto-line :transient nil)
+    ("l" "Line ⬍" casual-avy-avy-goto-line :transient nil)
     ("e" "End of line" avy-goto-end-of-line :transient nil)
     ("o" "Org heading" avy-org-goto-heading-timer
-     :if ca-org-mode-p
+     :if casual-avy-org-mode-p
      :transient nil)
     ("n" "Line number" goto-line
-     :if ca-display-line-numbers-mode-p
+     :if casual-avy-display-line-numbers-mode-p
      :transient nil)]
 
    ["Edit Other Line"
     ("C" "Copy" avy-kill-ring-save-whole-line :transient nil)
     ("k" "Kill" avy-kill-whole-line
-     :if ca-buffer-writeable-p
+     :if casual-avy-buffer-writeable-p
      :transient nil)
     ("m" "Move to above current line" avy-move-line
-     :if ca-buffer-writeable-p
+     :if casual-avy-buffer-writeable-p
      :transient nil)
     ("d" "Duplicate to above current line" avy-copy-line
-     :if ca-buffer-writeable-p
+     :if casual-avy-buffer-writeable-p
      :transient nil)]]
 
   ["Edit Other Region (choose two lines)"
     ("r" "Copy" avy-kill-ring-save-region :transient nil)
     ("K" "Kill" avy-kill-region
-     :if ca-buffer-writeable-p
+     :if casual-avy-buffer-writeable-p
      :transient nil)
     ("M" "Move to above current line" avy-move-region
-     :if ca-buffer-writeable-p
+     :if casual-avy-buffer-writeable-p
      :transient nil)
     ("D" "Duplicate to above current line" avy-copy-region
-     :if ca-buffer-writeable-p
+     :if casual-avy-buffer-writeable-p
      :transient nil)
     ("t" "Transpose lines in active region" avy-transpose-lines-in-region
-     :if ca-buffer-writeable-and-region-active-p
+     :if casual-avy-buffer-writeable-and-region-active-p
      :transient nil)]
 
   [:class transient-row
@@ -244,7 +244,3 @@ Always choose love."
 
 (provide 'casual-avy)
 ;;; casual-avy.el ends here
-
-;; Local Variables:
-;; read-symbol-shorthands: (("ca-" . "casual-avy-"))
-;; End:
