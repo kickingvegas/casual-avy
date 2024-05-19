@@ -68,13 +68,40 @@
     (push (casualt-suffix-test-vector "M" #'avy-move-region) test-vectors)
     (push (casualt-suffix-test-vector "D" #'avy-copy-region) test-vectors)
 
-    (push (casualt-suffix-test-vector "v" #'casual-avy-version) test-vectors)
+    (push (casualt-suffix-test-vector "," #'casual-avy-settings-tmenu) test-vectors)
+
     ;;(push (casualt-suffix-test-vector "t" #'avy-transpose-lines-in-region) test-vectors)
 
     (casualt-suffix-testbench-runner test-vectors
                                      #'casual-avy-tmenu
                                      '(lambda () (random 5000))))
   (casualt-breakdown t))
+
+(ert-deftest test-casual-avy-settings-tmenu-bindings ()
+  (casualt-setup)
+
+  (let ((test-vectors (list)))
+    (push (casualt-suffix-test-vector "u" #'casual-avy--customize-casual-avy-use-unicode-symbols) test-vectors)
+    (push (casualt-suffix-test-vector "A" #'casual-avy--customize-avy-group) test-vectors)
+    (push (casualt-suffix-test-vector "a" #'casual-avy-about) test-vectors)
+    (push (casualt-suffix-test-vector "v" #'casual-avy-version) test-vectors)
+
+    (casualt-suffix-testbench-runner test-vectors
+                                     #'casual-avy-settings-tmenu
+                                     '(lambda () (random 5000))))
+  (casualt-breakdown t))
+
+(ert-deftest test-casual-avy-unicode-db ()
+  (let* ((item (eval (alist-get :scope casual-avy-unicode-db))))
+    (should (string-equal "#" (nth 1 item)))
+    (should (string-equal "⬍" (nth 0 item)))))
+
+(ert-deftest test-casual-avy-unicode-get ()
+  (let ((casual-avy-use-unicode-symbols t))
+    (should (string-equal "⬍" (casual-avy-unicode-db-get :scope))))
+
+  (let ((casual-avy-use-unicode-symbols nil))
+    (should (string-equal "#" (casual-avy-unicode-db-get :scope)))))
 
 (provide 'test-casual-avy)
 ;;; test-casual-avy.el ends here
