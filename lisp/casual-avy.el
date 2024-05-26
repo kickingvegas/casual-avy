@@ -44,7 +44,7 @@
 
 (defconst casual-avy-unicode-db
   '((:scope . '("⬍" "#")))
-  "Unicode symbol DB to use for Info Transient menus.")
+  "Unicode symbol DB to use for Avy Transient menus.")
 
 (defun casual-avy--customize-casual-avy-use-unicode-symbols ()
   "Customize `casual-avy-use-unicode-symbols'.
