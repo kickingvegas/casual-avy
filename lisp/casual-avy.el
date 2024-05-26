@@ -5,7 +5,7 @@
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
 ;; Keywords: tools
-;; Version: 1.0.3
+;; Version: 1.0.4
 ;; Package-Requires: ((emacs "29.1") (avy "0.5.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@
 
 (defconst casual-avy-unicode-db
   '((:scope . '("⬍" "#")))
-  "Unicode symbol DB to use for Info Transient menus.")
+  "Unicode symbol DB to use for Avy Transient menus.")
 
 (defun casual-avy--customize-casual-avy-use-unicode-symbols ()
   "Customize `casual-avy-use-unicode-symbols'.
