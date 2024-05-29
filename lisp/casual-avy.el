@@ -79,7 +79,7 @@ plain ASCII-range string."
 
 (defun casual-avy-display-line-numbers-mode-p ()
   "Predicate to test if `display-line-numbers-mode' is enabled."
-  (symbol-value display-line-numbers))
+  (if display-line-numbers t nil))
 
 (defun casual-avy-org-mode-p ()
   "Predicate to test if `org-mode' is enabled."
