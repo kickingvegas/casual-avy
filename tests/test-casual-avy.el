@@ -103,5 +103,12 @@
   (let ((casual-avy-use-unicode-symbols nil))
     (should (string-equal "#" (casual-avy-unicode-db-get :scope)))))
 
+(ert-deftest test-casual-avy-display-line-numbers-mode-p ()
+  (let ((display-line-numbers nil))
+    (should (not (casual-avy-display-line-numbers-mode-p))))
+
+  (let ((display-line-numbers 'relative))
+    (should (casual-avy-display-line-numbers-mode-p))))
+
 (provide 'test-casual-avy)
 ;;; test-casual-avy.el ends here

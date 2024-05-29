@@ -1,11 +1,11 @@
-;;; casual-avy.el --- Casual Avy                 -*- lexical-binding: t; -*-
+;;; casual-avy.el --- Transient UI for Avy -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
 ;; Keywords: tools
-;; Version: 1.0.4
+;; Version: 1.0.5
 ;; Package-Requires: ((emacs "29.1") (avy "0.5.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -79,7 +79,7 @@ plain ASCII-range string."
 
 (defun casual-avy-display-line-numbers-mode-p ()
   "Predicate to test if `display-line-numbers-mode' is enabled."
-  (symbol-value display-line-numbers))
+  (if display-line-numbers t nil))
 
 (defun casual-avy-org-mode-p ()
   "Predicate to test if `org-mode' is enabled."
