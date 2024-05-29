@@ -1,4 +1,4 @@
-;;; casual-avy.el --- Casual Avy                 -*- lexical-binding: t; -*-
+;;; casual-avy.el --- Transient UI for Avy -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024  Charles Choi
 
