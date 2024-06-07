@@ -5,7 +5,7 @@
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
 ;; Keywords: tools
-;; Version: 1.0.5
+;; Version: 1.1.0
 ;; Package-Requires: ((emacs "29.1") (avy "0.5.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -303,7 +303,7 @@ Always choose love."
 
   [:class transient-row
           ("," "Settings›" casual-avy-settings-tmenu :transient nil)
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-avy-quit-all)])
 
 (transient-define-prefix casual-avy-settings-tmenu ()
   ["Customize"
@@ -314,7 +314,25 @@ Always choose love."
   [:class transient-row
           ("a" "About" casual-avy-about :transient nil)
           ("v" "Version" casual-avy-version :transient nil)
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-avy-quit-one)
+          (casual-avy-quit-all)])
+
+;; Transient Navigation
+(transient-define-suffix casual-avy-quit-all ()
+  "Dismiss all menus."
+  :transient nil
+  :key "C-q"
+  :description "Dismiss"
+  (interactive)
+  (transient-quit-all))
+
+(transient-define-suffix casual-avy-quit-one ()
+  "Go back to previous menu."
+  :transient nil
+  :key "C-g"
+  :description "‹Back"
+  (interactive)
+  (transient-quit-one))
 
 (provide 'casual-avy)
 ;;; casual-avy.el ends here

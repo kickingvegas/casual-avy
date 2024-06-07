@@ -29,6 +29,10 @@ ELISP_INCLUDES=casual-avy-version.el
 ELISP_PACKAGES=
 ELISP_TEST_INCLUDES=casual-avy-test-utils.el
 PACKAGE_NAME=casual-avy
+CASUAL_BASE_DIR=$(HOME)/Projects/elisp
+EMACS_CONFIG_DIR=$(HOME)/.config/emacs
+AVY_DIR=$(EMACS_CONFIG_DIR)/elpa/avy-20230420.404
+PACKAGE_PATHS=-L $(AVY_DIR)
 
 .PHONY: tests compile regression
 
@@ -39,7 +43,9 @@ PACKAGE_NAME=casual-avy
 -f batch-byte-compile $<
 
 .el.elt :
-	$(EXEC_NAME) -Q --batch $(patsubst %, -l %, $(ELISP_INCLUDES)) \
+	$(EXEC_NAME) -Q --batch \
+$(PACKAGE_PATHS) \
+$(patsubst %, -l %, $(ELISP_INCLUDES)) \
 -l $< \
 -l $(patsubst %, ../tests/%, $(ELISP_TEST_INCLUDES)) \
 -l $(patsubst %, ../tests/test-%, $<) \
@@ -56,6 +62,7 @@ $(patsubst %, -l %, $(ELISP_PACKAGES)) \
 
 $(PACKAGE_NAME).elt: $(PACKAGE_NAME).el
 	$(EXEC_NAME) -Q --batch \
+$(PACKAGE_PATHS) \
 $(patsubst %, -l %, $(ELISP_INCLUDES)) \
 $(patsubst %, -l %, $(ELISP_PACKAGES)) \
 -l $< \
