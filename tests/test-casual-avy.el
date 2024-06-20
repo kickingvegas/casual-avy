@@ -81,7 +81,7 @@
   (casualt-setup)
 
   (let ((test-vectors (list)))
-    (push (casualt-suffix-test-vector "u" #'casual-avy--customize-casual-avy-use-unicode-symbols) test-vectors)
+    (push (casualt-suffix-test-vector "u" #'casual-lib-customize-casual-lib-use-unicode) test-vectors)
     (push (casualt-suffix-test-vector "A" #'casual-avy--customize-avy-group) test-vectors)
     (push (casualt-suffix-test-vector "a" #'casual-avy-about) test-vectors)
     (push (casualt-suffix-test-vector "v" #'casual-avy-version) test-vectors)
@@ -98,17 +98,10 @@
 
 (ert-deftest test-casual-avy-unicode-get ()
   (let ((casual-avy-use-unicode-symbols t))
-    (should (string-equal "⬍" (casual-avy-unicode-db-get :scope))))
+    (should (string-equal "⬍" (casual-avy-unicode-get :scope))))
 
   (let ((casual-avy-use-unicode-symbols nil))
-    (should (string-equal "#" (casual-avy-unicode-db-get :scope)))))
-
-(ert-deftest test-casual-avy-display-line-numbers-mode-p ()
-  (let ((display-line-numbers nil))
-    (should (not (casual-avy-display-line-numbers-mode-p))))
-
-  (let ((display-line-numbers 'relative))
-    (should (casual-avy-display-line-numbers-mode-p))))
+    (should (string-equal "#" (casual-avy-unicode-get :scope)))))
 
 (provide 'test-casual-avy)
 ;;; test-casual-avy.el ends here
