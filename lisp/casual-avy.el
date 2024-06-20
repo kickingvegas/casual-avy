@@ -5,8 +5,8 @@
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
 ;; Keywords: tools
-;; Version: 1.1.0
-;; Package-Requires: ((emacs "29.1") (avy "0.5.0"))
+;; Version: 1.2.0
+;; Package-Requires: ((emacs "29.1") (avy "0.5.0") (casual-lib "1.0.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -35,63 +35,45 @@
 (require 'avy)
 (require 'display-line-numbers)
 (require 'org)
+(require 'casual-lib)
 (require 'casual-avy-version)
+
+(define-obsolete-variable-alias 'casual-avy-use-unicode-symbols
+  'casual-lib-use-unicode
+  "1.2.0")
 
 (defcustom casual-avy-use-unicode-symbols nil
   "If non-nil then use Unicode symbols whenever appropriate for labels."
   :type 'boolean
   :group 'avy)
 
-(defconst casual-avy-unicode-db
-  '((:scope . '("⬍" "#")))
-  "Unicode symbol DB to use for Avy Transient menus.")
-
-(defun casual-avy--customize-casual-avy-use-unicode-symbols ()
-  "Customize `casual-avy-use-unicode-symbols'.
-
-Customize Casual Avy to use Unicode symbols in place of strings
-when appropriate."
-  (interactive)
-  (customize-variable 'casual-avy-use-unicode-symbols))
-
 (defun casual-avy--customize-avy-group ()
   "Call the Avy customization group."
   (interactive)
   (customize-group "avy"))
 
-(defun casual-avy-unicode-db-get (key &optional db)
+(defconst casual-avy-unicode-db
+  '((:scope . '("⬍" "#")))
+  "Unicode symbol DB to use for Avy Transient menus.")
+
+(defun casual-avy-unicode-get (key)
   "Lookup Unicode symbol for KEY in DB.
 
 - KEY symbol used to lookup Unicode symbol in DB.
-- DB alist containing Unicode symbols used by Info Transient menus.
 
-If DB is nil, then `casual-avy-unicode-db' is used by default.
-
-If the value of customizable variable `casual-avy-use-unicode-symbols'
+If the value of customizable variable `casual-lib-use-unicode'
 is non-nil, then the Unicode symbol is returned, otherwise a
 plain ASCII-range string."
-  (let* ((db (or db casual-avy-unicode-db))
-         (unicode casual-avy-use-unicode-symbols)
-         (item (alist-get key db)))
-    (if unicode
-        (nth 0 (eval item))
-      (nth 1 (eval item)))))
-
-(defun casual-avy-display-line-numbers-mode-p ()
-  "Predicate to test if `display-line-numbers-mode' is enabled."
-  (if display-line-numbers t nil))
+  (casual-lib-unicode-db-get key casual-avy-unicode-db))
 
 (defun casual-avy-org-mode-p ()
   "Predicate to test if `org-mode' is enabled."
   (derived-mode-p 'org-mode))
 
-(defun casual-avy-buffer-writeable-p ()
-  "Predicate to test if buffer is writeable."
-  (not buffer-read-only))
-
-(defun casual-avy-buffer-writeable-and-region-active-p ()
-  "Predicate to test if buffer is writeable and region is active."
-  (and (casual-avy-buffer-writeable-p) (region-active-p)))
+(defun casual-avy-imenu-support-p ()
+  "Predicate to test if mode supports `imenu'."
+  (or (derived-mode-p 'prog-mode)
+      (derived-mode-p 'makefile-mode)))
 
 (defun casual-avy-select-above-below (avy-fname &optional t-args)
   "Select Avy above or below function name AVY-FNAME given T-ARGS.
@@ -107,19 +89,19 @@ treated as if neither were specified."
     (cond
      ((and (member "--above" t-args)
            (member "--below" t-args))
-      (message "all")
+      ;;(message "all")
       (call-interactively (intern avy-fname)))
 
      ((member "--above" t-args)
-      (message "above")
+      ;;(message "above")
       (call-interactively (intern (concat avy-fname "-above"))))
 
      ((member "--below" t-args)
-      (message "below")
+      ;;(message "below")
       (call-interactively (intern (concat avy-fname "-below"))))
 
      (t
-      (message "all")
+      ;;(message "all")
       (call-interactively (intern avy-fname))))))
 
 (defun casual-avy-avy-goto-line (&optional t-args)
@@ -225,114 +207,97 @@ Always choose love."
   (interactive)
   (describe-function #'casual-avy-about-avy))
 
+(defun casual-avy-scope-label (template)
+  "Generate formatted Avy scope label with TEMPLATE string."
+  (format template (casual-avy-unicode-get :scope)))
+
 ;;;###autoload (autoload 'casual-avy-tmenu "casual-avy" nil t)
 (transient-define-prefix casual-avy-tmenu ()
   "Casual Avy Transient menu."
   ["Scope (applies to ⬍)"
-   :description (lambda ()
-                  (format "Scope (applies to (%s))"
-                          (casual-avy-unicode-db-get :scope)))
+   :description (lambda () (casual-avy-scope-label "Scope (applies to (%s))"))
    :class transient-row
    ("a" "Above" "--above")
    ("b" "Below" "--below")]
   [["Goto Thing"
     ("c" "Character" avy-goto-char-timer :transient nil)
     ("2" "2 Characters ⬍" casual-avy-avy-goto-char-2
-     :description (lambda ()
-                    (format "2 Characters (%s)"
-                            (casual-avy-unicode-db-get :scope)))
+     :description (lambda () (casual-avy-scope-label "2 Characters (%s)"))
      :transient nil)
     ("w" "Word ⬍" casual-avy-avy-goto-word-1
-     :description (lambda ()
-                    (format "Word (%s)"
-                            (casual-avy-unicode-db-get :scope)))
+     :description (lambda () (casual-avy-scope-label "Word (%s)"))
      :transient nil)
     ("s" "Symbol ⬍" casual-avy-avy-goto-symbol-1
-     :description (lambda ()
-                    (format "Symbol (%s)"
-                            (casual-avy-unicode-db-get :scope)))
+     :description (lambda () (casual-avy-scope-label "Symbol (%s)"))
      :transient nil)
     ("W" "Whitespace end ⬍" casual-avy-avy-goto-whitespace-end
-     :description (lambda ()
-                    (format "Whitespace end (%s)"
-                            (casual-avy-unicode-db-get :scope)))
+     :description (lambda () (casual-avy-scope-label "Whitespace end (%s)"))
      :transient nil)
     ("p" "Pop mark" avy-pop-mark :transient nil)]
 
    ["Goto Line"
     :pad-keys t
     ("l" "Line ⬍" casual-avy-avy-goto-line
-     :description (lambda ()
-                    (format "Line (%s)"
-                            (casual-avy-unicode-db-get :scope)))
+     :description (lambda () (casual-avy-scope-label "Line (%s)"))
      :transient nil)
     ("e" "End of line" avy-goto-end-of-line :transient nil)
     ("o" "Org heading" avy-org-goto-heading-timer
      :if casual-avy-org-mode-p
      :transient nil)
     ("n" "Line number" goto-line
-     :if casual-avy-display-line-numbers-mode-p
+     :if casual-lib-display-line-numbers-mode-p
      :transient nil)]
 
    ["Edit Other Line"
     ("C" "Copy" avy-kill-ring-save-whole-line :transient nil)
     ("k" "Kill" avy-kill-whole-line
-     :if casual-avy-buffer-writeable-p
+     :if casual-lib-buffer-writeable-p
      :transient nil)
     ("m" "Move to above current line" avy-move-line
-     :if casual-avy-buffer-writeable-p
+     :if casual-lib-buffer-writeable-p
      :transient nil)
     ("d" "Duplicate to above current line" avy-copy-line
-     :if casual-avy-buffer-writeable-p
+     :if casual-lib-buffer-writeable-p
      :transient nil)]]
 
-  ["Edit Other Region (choose two lines)"
+  [["Edit Other Region (choose two lines)"
     ("r" "Copy" avy-kill-ring-save-region :transient nil)
     ("K" "Kill" avy-kill-region
-     :if casual-avy-buffer-writeable-p
+     :if casual-lib-buffer-writeable-p
      :transient nil)
     ("M" "Move to above current line" avy-move-region
-     :if casual-avy-buffer-writeable-p
+     :if casual-lib-buffer-writeable-p
      :transient nil)
     ("D" "Duplicate to above current line" avy-copy-region
-     :if casual-avy-buffer-writeable-p
+     :if casual-lib-buffer-writeable-p
      :transient nil)
     ("t" "Transpose lines in active region" avy-transpose-lines-in-region
-     :if casual-avy-buffer-writeable-and-region-active-p
+     :if casual-lib-buffer-writeable-and-region-active-p
      :transient nil)]
+
+   ["Misc"                              ;this is so bad assed. you need to define a predicate for this.
+    ("i" "Index…" imenu :if casual-avy-imenu-support-p)
+    ("i" "Org Goto…" org-goto :if casual-avy-org-mode-p)]]
 
   [:class transient-row
           ("," "Settings›" casual-avy-settings-tmenu :transient nil)
-          (casual-avy-quit-all)])
+          (casual-lib-quit-all)])
 
 (transient-define-prefix casual-avy-settings-tmenu ()
   ["Customize"
    ("u" "Use Unicode Symbols"
-    casual-avy--customize-casual-avy-use-unicode-symbols)
+    casual-lib-customize-casual-lib-use-unicode
+    :description (lambda ()
+                   (casual-lib-checkbox-label
+                    casual-lib-use-unicode
+                    "Use Unicode Symbols")))
    ("A" "Customize Avy Group" casual-avy--customize-avy-group)]
 
   [:class transient-row
           ("a" "About" casual-avy-about :transient nil)
           ("v" "Version" casual-avy-version :transient nil)
-          (casual-avy-quit-one)
-          (casual-avy-quit-all)])
-
-;; Transient Navigation
-(transient-define-suffix casual-avy-quit-all ()
-  "Dismiss all menus."
-  :transient nil
-  :key "C-q"
-  :description "Dismiss"
-  (interactive)
-  (transient-quit-all))
-
-(transient-define-suffix casual-avy-quit-one ()
-  "Go back to previous menu."
-  :transient nil
-  :key "C-g"
-  :description "‹Back"
-  (interactive)
-  (transient-quit-one))
+          (casual-lib-quit-one)
+          (casual-lib-quit-all)])
 
 (provide 'casual-avy)
 ;;; casual-avy.el ends here
