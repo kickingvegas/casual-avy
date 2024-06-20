@@ -70,6 +70,11 @@ plain ASCII-range string."
   "Predicate to test if `org-mode' is enabled."
   (derived-mode-p 'org-mode))
 
+(defun casual-avy-imenu-support-p ()
+  "Predicate to test if mode supports `imenu'."
+  (or (derived-mode-p 'prog-mode)
+      (derived-mode-p 'makefile-mode)))
+
 (defun casual-avy-select-above-below (avy-fname &optional t-args)
   "Select Avy above or below function name AVY-FNAME given T-ARGS.
 
@@ -255,7 +260,7 @@ Always choose love."
      :if casual-lib-buffer-writeable-p
      :transient nil)]]
 
-  ["Edit Other Region (choose two lines)"
+  [["Edit Other Region (choose two lines)"
     ("r" "Copy" avy-kill-ring-save-region :transient nil)
     ("K" "Kill" avy-kill-region
      :if casual-lib-buffer-writeable-p
@@ -269,6 +274,10 @@ Always choose love."
     ("t" "Transpose lines in active region" avy-transpose-lines-in-region
      :if casual-lib-buffer-writeable-and-region-active-p
      :transient nil)]
+
+   ["Misc"                              ;this is so bad assed. you need to define a predicate for this.
+    ("i" "Index…" imenu :if casual-avy-imenu-support-p)
+    ("i" "Org Goto…" org-goto :if casual-avy-org-mode-p)]]
 
   [:class transient-row
           ("," "Settings›" casual-avy-settings-tmenu :transient nil)
