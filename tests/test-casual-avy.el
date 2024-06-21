@@ -83,6 +83,7 @@
   (let ((test-vectors (list)))
     (push (casualt-suffix-test-vector "u" #'casual-lib-customize-casual-lib-use-unicode) test-vectors)
     (push (casualt-suffix-test-vector "A" #'casual-avy--customize-avy-group) test-vectors)
+    (push (casualt-suffix-test-vector "m" #'casual-avy--customize-casual-avy-imenu-modes) test-vectors)
     (push (casualt-suffix-test-vector "a" #'casual-avy-about) test-vectors)
     (push (casualt-suffix-test-vector "v" #'casual-avy-version) test-vectors)
 
@@ -102,6 +103,25 @@
 
   (let ((casual-avy-use-unicode-symbols nil))
     (should (string-equal "#" (casual-avy-unicode-get :scope)))))
+
+(ert-deftest test-casual-avy-org-mode-p ()
+  (let ((casual-avy-imenu-modes '()))
+    (should (not (casual-avy-imenu-support-p))))
+
+  (let ((casual-avy-imenu-modes nil))
+    (should (not (casual-avy-imenu-support-p))))
+
+  (let ((casual-avy-imenu-modes '(nil)))
+    (should (not (casual-avy-imenu-support-p))))
+
+  (let ((casual-avy-imenu-modes '(prog-mode)))
+    (emacs-lisp-mode)
+    (should (casual-avy-imenu-support-p)))
+
+  (let ((casual-avy-imenu-modes '(makefile-mode)))
+    (makefile-mode)
+    (should (casual-avy-imenu-support-p))))
+
 
 (provide 'test-casual-avy)
 ;;; test-casual-avy.el ends here

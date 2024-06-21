@@ -47,6 +47,16 @@
   :type 'boolean
   :group 'avy)
 
+(defcustom casual-avy-imenu-modes '(prog-mode makefile-mode)
+  "List of modes to enable Imenu item in `casual-avy-tmenu'."
+  :type '(repeat symbol)
+  :group 'avy)
+
+(defun casual-avy--customize-casual-avy-imenu-modes ()
+  "Customize variable `casual-avy-imenu-modes'."
+  (interactive)
+  (customize-variable 'casual-avy-imenu-modes))
+
 (defun casual-avy--customize-avy-group ()
   "Call the Avy customization group."
   (interactive)
@@ -71,9 +81,11 @@ plain ASCII-range string."
   (derived-mode-p 'org-mode))
 
 (defun casual-avy-imenu-support-p ()
-  "Predicate to test if mode supports `imenu'."
-  (or (derived-mode-p 'prog-mode)
-      (derived-mode-p 'makefile-mode)))
+  "Predicate to test if current mode supports `imenu'."
+  (let ((tests (mapcar (lambda (x)
+                         (if (derived-mode-p x) t nil))
+                       casual-avy-imenu-modes)))
+    (if (memq t tests) t nil)))
 
 (defun casual-avy-select-above-below (avy-fname &optional t-args)
   "Select Avy above or below function name AVY-FNAME given T-ARGS.
@@ -275,7 +287,7 @@ Always choose love."
      :if casual-lib-buffer-writeable-and-region-active-p
      :transient nil)]
 
-   ["Misc"                              ;this is so bad assed. you need to define a predicate for this.
+   ["Misc"
     ("i" "Index…" imenu :if casual-avy-imenu-support-p)
     ("i" "Org Goto…" org-goto :if casual-avy-org-mode-p)]]
 
@@ -291,6 +303,7 @@ Always choose love."
                    (casual-lib-checkbox-label
                     casual-lib-use-unicode
                     "Use Unicode Symbols")))
+   ("m" "Customize Imenu Modes" casual-avy--customize-casual-avy-imenu-modes)
    ("A" "Customize Avy Group" casual-avy--customize-avy-group)]
 
   [:class transient-row
