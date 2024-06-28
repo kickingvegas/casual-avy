@@ -292,24 +292,20 @@ Always choose love."
     ("i" "Org Goto…" org-goto :if casual-avy-org-mode-p)]]
 
   [:class transient-row
-          ("," "Settings›" casual-avy-settings-tmenu :transient nil)
-          (casual-lib-quit-all)])
+          (casual-lib-quit-one)
+          ("," "Settings›" casual-avy-settings-tmenu :transient nil)])
 
 (transient-define-prefix casual-avy-settings-tmenu ()
   ["Customize"
-   ("u" "Use Unicode Symbols"
-    casual-lib-customize-casual-lib-use-unicode
-    :description (lambda ()
-                   (casual-lib-checkbox-label
-                    casual-lib-use-unicode
-                    "Use Unicode Symbols")))
+   (casual-lib-customize-unicode)
+   (casual-lib-customize-hide-navigation)
    ("m" "Customize Imenu Modes" casual-avy--customize-casual-avy-imenu-modes)
    ("A" "Customize Avy Group" casual-avy--customize-avy-group)]
 
   [:class transient-row
+          (casual-lib-quit-one)
           ("a" "About" casual-avy-about :transient nil)
           ("v" "Version" casual-avy-version :transient nil)
-          (casual-lib-quit-one)
           (casual-lib-quit-all)])
 
 (provide 'casual-avy)
