@@ -98,30 +98,15 @@
     (should (string-equal "⬍" (nth 0 item)))))
 
 (ert-deftest test-casual-avy-unicode-get ()
-  (let ((casual-avy-use-unicode-symbols t))
-    (should (string-equal "⬍" (casual-avy-unicode-get :scope))))
+  (let ((casual-lib-use-unicode t))
+    (should (string-equal "⬍" (casual-avy-unicode-get :scope)))
+    (should (string-equal "↑" (casual-avy-unicode-get :previous)))
+    (should (string-equal "↓" (casual-avy-unicode-get :next))))
 
-  (let ((casual-avy-use-unicode-symbols nil))
-    (should (string-equal "#" (casual-avy-unicode-get :scope)))))
-
-(ert-deftest test-casual-avy-org-mode-p ()
-  (let ((casual-avy-imenu-modes '()))
-    (should (not (casual-avy-imenu-support-p))))
-
-  (let ((casual-avy-imenu-modes nil))
-    (should (not (casual-avy-imenu-support-p))))
-
-  (let ((casual-avy-imenu-modes '(nil)))
-    (should (not (casual-avy-imenu-support-p))))
-
-  (let ((casual-avy-imenu-modes '(prog-mode)))
-    (emacs-lisp-mode)
-    (should (casual-avy-imenu-support-p)))
-
-  (let ((casual-avy-imenu-modes '(makefile-mode)))
-    (makefile-mode)
-    (should (casual-avy-imenu-support-p))))
-
+  (let ((casual-lib-use-unicode nil))
+    (should (string-equal "#" (casual-avy-unicode-get :scope)))
+    (should (string-equal "Previous" (casual-avy-unicode-get :previous)))
+    (should (string-equal "Next" (casual-avy-unicode-get :next)))))
 
 (provide 'test-casual-avy)
 ;;; test-casual-avy.el ends here
