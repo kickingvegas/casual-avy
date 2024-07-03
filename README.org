@@ -1,4 +1,5 @@
 [[https://melpa.org/#/casual-avy][file:https://melpa.org/packages/casual-avy-badge.svg]]
+
 * Casual Avy
 An opinionated [[https://github.com/magit/transient][Transient]]-based menu for [[https://github.com/abo-abo/avy][Avy]], a GNU Emacs package for jumping to visible text using a char-based decision tree.
 
@@ -58,21 +59,19 @@ The following glossary details the meaning of the menu labels.
 ** Unicode Symbol Support
 By enabling “Use Unicode Symbols” from the Settings menu, Casual Avy will use Unicode symbols as appropriate in its menus. The following mapping is shown in the table below:
 
-| Name  | Plain | Unicode |
-|-------+-------+---------|
-| Scope | #     | ⬍       |
+| Name     | Plain    | Unicode |
+|----------+----------+---------|
+| Scope    | #        | ⬍       |
+| Previous | Previous | ↑       |
+| Next     | Next     | ↓       |
 
 ** Imenu (index) Support
-The Emacs [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html][Imenu]] feature offers a way to navigate to a major definition in a file, provided that the current mode supports it. As Imenu behavior is closely related to Avy, support for it is provided here as the menu item labeled "(i) Index". 
-
-Casual Avy defines a customizable variable ~casual-avy-imenu-modes~ which holds a list of modes to turn this feature on. It is accessible from the "(,) Settings›" menu item.
-
-Note: Casual Avy is naive in that the modes defined in ~casual-avy-imenu-modes~ are presumed to support Imenu.
+The Emacs [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html][Imenu]] (index menu) feature offers a way to navigate to a major definition in a file, provided that the current mode supports it. As Imenu behavior is closely related to Avy, support for it is provided here as the menu item labeled "(i) Index".
 
 ** Org Support
 If the current buffer is an Org file, then two menu items are supported:
 - "(o) Org heading"
-- "(i) Org Goto…"
+- "(g) Org Goto…"
 
 Selecting "Org heading" will invoke the ~avy-org-goto-heading-timer~ command. Note as with all other Avy commands, this will only work with Org headings that are visible. If navigation to any Org header is desired, select "Org Goto…" to invoke the command ~org-goto~.
 
@@ -115,4 +114,3 @@ Users who prefer finer grained control over package installation can install eac
 
 * Acknowledgments
 A heartfelt thanks to all the contributors to Avy and [[https://github.com/magit/transient][Transient]]. Casual Avy would not be possible without your efforts.
-

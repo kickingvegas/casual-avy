@@ -5,7 +5,7 @@
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
 ;; Keywords: tools
-;; Version: 1.3.0
+;; Version: 1.4.0
 ;; Package-Requires: ((emacs "29.1") (avy "0.5.0") (casual-lib "1.1.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -34,6 +34,7 @@
 (require 'transient)
 (require 'avy)
 (require 'display-line-numbers)
+(require 'imenu)
 (require 'org)
 (require 'casual-lib)
 (require 'casual-avy-version)
@@ -46,6 +47,8 @@
   "If non-nil then use Unicode symbols whenever appropriate for labels."
   :type 'boolean
   :group 'avy)
+
+(make-obsolete-variable 'casual-avy-imenu-modes nil "1.4.0")
 
 (defcustom casual-avy-imenu-modes '(prog-mode makefile-mode)
   "List of modes to enable Imenu item in `casual-avy-tmenu'."
@@ -63,7 +66,9 @@
   (customize-group "avy"))
 
 (defconst casual-avy-unicode-db
-  '((:scope . '("⬍" "#")))
+  '((:scope . '("⬍" "#"))
+    (:previous . '("↑" "Previous"))
+    (:next . '("↓" "Next")))
   "Unicode symbol DB to use for Avy Transient menus.")
 
 (defun casual-avy-unicode-get (key)
@@ -82,10 +87,7 @@ plain ASCII-range string."
 
 (defun casual-avy-imenu-support-p ()
   "Predicate to test if current mode supports `imenu'."
-  (let ((tests (mapcar (lambda (x)
-                         (if (derived-mode-p x) t nil))
-                       casual-avy-imenu-modes)))
-    (if (memq t tests) t nil)))
+  (if imenu--index-alist t nil))
 
 (defun casual-avy-select-above-below (avy-fname &optional t-args)
   "Select Avy above or below function name AVY-FNAME given T-ARGS.
@@ -287,9 +289,17 @@ Always choose love."
      :if casual-lib-buffer-writeable-and-region-active-p
      :transient nil)]
 
-   ["Misc"
-    ("i" "Index…" imenu :if casual-avy-imenu-support-p)
-    ("i" "Org Goto…" org-goto :if casual-avy-org-mode-p)]]
+   ["Index"
+    ("g" "Org Goto…" org-goto :if casual-avy-org-mode-p)
+    ("i" "Index…" imenu :if casual-avy-imenu-support-p)]
+
+   ["Occur/Grep/Error"
+    ("M-p" "Previous" previous-error
+     :description (lambda () "%s" (format (casual-avy-unicode-get :previous)))
+     :transient t)
+    ("M-n" "Next" next-error
+     :description (lambda () "%s" (format (casual-avy-unicode-get :next)))
+     :transient t)]]
 
   [:class transient-row
           (casual-lib-quit-one)
