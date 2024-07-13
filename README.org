@@ -66,11 +66,12 @@ By enabling “Use Unicode Symbols” from the Settings menu, Casual Avy will us
 | Next     | Next     | ↓       |
 
 ** Imenu (index) Support
-The Emacs [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html][Imenu]] (index menu) feature offers a way to navigate to a major definition in a file, provided that the current mode supports it. As Imenu behavior is closely related to Avy, support for it is provided here as the menu item labeled "(i) Index". Be sure to enable the index menu to get the benefits:
+The Emacs [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html][Imenu]] (index menu) feature offers a way to navigate to a major definition in a file, provided that the current mode supports it. As Imenu behavior is closely related to Avy, support for it is provided here as the menu item labeled "(i) Index". The following configuration code turns on index menus for Markdown, Org, Makefile, and programming language modes.
 #+begin_src elisp :lexical no
   (add-hook 'markdown-mode-hook #'imenu-add-menubar-index)
   (add-hook 'makefile-mode-hook #'imenu-add-menubar-index)
   (add-hook 'prog-mode-hook #'imenu-add-menubar-index)
+  (add-hook 'org-mode-hook #'imenu-add-menubar-index)
 #+end_src
 
 ** Org Support
