@@ -6,7 +6,7 @@ An opinionated [[https://github.com/magit/transient][Transient]]-based user inte
 [[file:docs/images/casual-avy-screenshot.png]]
 
 * Motivation
-While highly functional, Avy has a steep learning curve as it has a very diverse command set. Menus are a user interface (UI) affordance that offer users discoverability and recall that can lower Avy's learning curve. While menus are commonly associated with mouse-driven UI, the inclusion of Transient in Emacs core allows for a menu UI that is keyboard-driven. Casual Avy endeavors to offer this as many Emacs users prefer keyboard-driven workflows.
+While highly functional, Avy has a steep learning curve as it has a very diverse command set. Menus are a user interface (UI) affordance that offer users discoverability and recognition that can lower Avy's learning curve. While menus are commonly associated with mouse-driven UI, the inclusion of Transient in Emacs core allows for a menu UI that is keyboard-driven. Casual Avy endeavors to offer this as many Emacs users prefer keyboard-driven workflows.
 
 ** Goals
 - To provide a keyboard-driven menu UI for Avy.
