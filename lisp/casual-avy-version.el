@@ -22,7 +22,7 @@
 
 ;;; Code:
 
-(defconst casual-avy-version "1.4.2"
+(defconst casual-avy-version "1.4.3-rc.1"
   "Casual Avy Version.")
 
 (defun casual-avy-version ()
