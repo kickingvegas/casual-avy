@@ -37,12 +37,26 @@ If installed via MELPA (pending) then add these lines to your Emacs initializati
   (keymap-global-set "M-g" #'casual-avy-tmenu)
 #+end_src
 
-If you use ~use-package~, here is the recipe for installing it.
-#+begin_src elisp :lexical no
-  (use-package casual-avy
-    :ensure t
-    :bind ("M-g" . casual-avy-tmenu))
-#+end_src
+** Upgrading to Casual Avy 2.x
+If you have been using an earlier version 1.x of Casual Avy, thank you. Please use the following guidance:
+
+*** If you do not use ~use-package~ to configure Casual Avy
+
+Updating the package ~casual-avy~ via the [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Package-Menu.html][package menu buffer]] will automatically update the ~casual~ package. However, this will not clean up older Casual 1.x packages. To migrate your existing Casual packages from 1.x to 2.x, run the following commands:
+
+#+BEGIN_SRC elisp
+M-x load-library casual
+M-x casual-upgrade-base-to-version-2
+#+END_SRC
+
+Any Casual v1.x packages that have been superseded by this package will be uninstalled.
+
+While not necessary, it is recommended to run ~M-x package-autoremove~ to purge any dangling dependent packages. Cautious readers can choose to audit any packages that are targeted to be removed.
+
+*** If you have used ~use-package~ to configure Casual Avy
+For version 2.x going forward, I (Charles Choi) have decided to not offer any documented guidance on using ~use-package~ to configure Casual Avy due my lack of expertise in using it. I leave it to more skilled readers to determine how to best use [[https://www.gnu.org/software/emacs/manual/html_node/use-package/][use-package]] for their configuration. Please also note that this is not a prohibition on using ~use-package~ with Casual Avy. I am simply admitting that I don't know how to use it. 
+
+That said, if you have used ~:ensure t~ to install a superseded package, you /must/ remove that configuration. After doing so, please follow the above instructions for installing ~casual-avy~.
 
 ** A Note on Package Dependencies
 Casual Avy requires a recent installation of Transient 0.6.0+ from either [[https://elpa.gnu.org/packages/transient.html][ELPA]] or [[https://melpa.org/#/transient][MELPA]]. If your version of Emacs is ≤ 30 but also includes Transient as a built-in package, you will need to set the customizable variable ~package-install-upgrade-built-in~ to ~t~ to enable updating it via ~package.el~.  Set this variable and proceed with updating Casual Avy.  Alternately invoking ~package-install~ with a prefix (~C-u~) will temporarily coerce the update of dependent built-in packages (example: ~C-u M-x package-install~ ~casual~).
