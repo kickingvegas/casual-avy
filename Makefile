@@ -70,7 +70,7 @@ status
 
 ## Run test regression
 tests:
-	$(MAKE) -C lisp tests
+	$(MAKE) -C $(LISP_DIR) tests
 
 ## Bump Patch Version
 bump-casual:
@@ -123,7 +123,7 @@ create-release-tag: checkout-main bump
 
 create-gh-release: VERSION_BUMP:=$(shell python -m semver nextver $(VERSION) $(BUMP_LEVEL))
 create-gh-release: create-release-tag
-	gh release create -t v$(VERSION_BUMP) --generate-notes $(VERSION_BUMP)
+	gh release create --draft --title v$(VERSION_BUMP) --generate-notes $(VERSION_BUMP)
 
 status:
 	git status

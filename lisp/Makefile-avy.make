@@ -14,19 +14,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TIMESTAMP := $(shell /bin/date "+%Y%m%d_%H%M%S")
+CASUAL_MAKE_HOME=$(HOME)/Projects/elisp/casual/lisp
 
-.PHONY: tests avy-tests clean regression
+include $(CASUAL_MAKE_HOME)/Makefile--defines.make
 
-SRC_DIR=.
+PACKAGE_NAME=casual-avy
+ELISP_INCLUDES=casual-avy-version.el
+ELISP_PACKAGES=
+ELISP_TEST_INCLUDES=casual-avy-test-utils.el
+PACKAGE_PATHS=					\
+-L $(EMACS_ELPA_DIR)/compat-current		\
+-L $(EMACS_ELPA_DIR)/seq-current		\
+-L $(EMACS_ELPA_DIR)/transient-current		\
+-L $(EMACS_ELPA_DIR)/avy-current		\
+-L $(CASUAL_LIB_LISP_DIR)
 
-tests: avy-tests
-
-avy-tests:
-	$(MAKE) -C $(SRC_DIR) -f Makefile-avy.make tests
-
-clean:
-	$(MAKE) -C $(SRC_DIR) -f Makefile-avy.make clean
-
-regression:
-	$(MAKE) -C $(SRC_DIR) -f Makefile-avy.make regression
+include $(CASUAL_MAKE_HOME)/Makefile--rules.make
