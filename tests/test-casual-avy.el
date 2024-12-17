@@ -27,10 +27,6 @@
 (require 'casual-avy-test-utils)
 (require 'casual-avy)
 
-;; TODO: Need to figure out how to import Avy when running this test from the
-;; command line.
-
-;; !!!: This test must be run interactively via `ert'.
 (ert-deftest test-casual-avy-tmenu-bindings ()
   (casualt-setup)
 
@@ -67,6 +63,7 @@
     (push (casualt-suffix-test-vector "K" #'avy-kill-region) test-vectors)
     (push (casualt-suffix-test-vector "M" #'avy-move-region) test-vectors)
     (push (casualt-suffix-test-vector "D" #'avy-copy-region) test-vectors)
+    (push (casualt-suffix-test-vector "" #'transient-quit-all) test-vectors)
 
     (push (casualt-suffix-test-vector "," #'casual-avy-settings-tmenu) test-vectors)
 

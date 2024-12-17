@@ -308,8 +308,9 @@ Always choose love."
      :transient t)]]
 
   [:class transient-row
-          (casual-lib-quit-one)
-          ("," "Settings›" casual-avy-settings-tmenu :transient nil)])
+   (casual-lib-quit-one)
+   ("," "Settings›" casual-avy-settings-tmenu :transient nil)
+   ("RET" "Exit Avy" transient-quit-all)])
 
 (transient-define-prefix casual-avy-settings-tmenu ()
   ["Customize"
