@@ -1,6 +1,6 @@
 ;;; casual-avy.el --- Transient UI for Avy -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
@@ -302,10 +302,10 @@ Always choose love."
    ["Occur/Grep/Error"
     ("M-p" "Previous" previous-error
      :description (lambda () "%s" (format (casual-avy-unicode-get :previous)))
-     :transient t)
+     :transient nil)
     ("M-n" "Next" next-error
      :description (lambda () "%s" (format (casual-avy-unicode-get :next)))
-     :transient t)]]
+     :transient nil)]]
 
   [:class transient-row
    (casual-lib-quit-one)

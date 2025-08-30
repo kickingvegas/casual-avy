@@ -26,19 +26,32 @@
 (require 'ert)
 (require 'transient)
 (require 'kmacro)
+(require 'casual-lib)
+(require 'casual-lib-test-utils)
 
-(defun casualt-setup ()
-  "Casual menu test setup function."
-  (let ((filename "/tmp/casual-avy-test-scratch.el"))
-    (with-temp-file filename
-      (insert ";; hey there
+(defun casualt-avy-setup (&optional filename)
+  "Casual avy test setup function."
+
+  (when filename
+    (let ((temp-filename (concat "/tmp/" filename)))
+      (with-temp-file temp-filename
+        (insert ";; hey there
 ;; wanted to say this"))
-    (find-file filename)
-    (display-line-numbers-mode t)))
+      (find-file temp-filename)
+      (display-line-numbers-mode t)))
 
-(defun casualt-breakdown (&optional clear)
-  "Casual menu test breakdown function, if CLEAR is non-nil then clear state."
-  (kill-buffer "casual-avy-test-scratch.el"))
+  )
+
+(defun casualt-avy-breakdown (&optional filename)
+  "Casual menu test breakdown function with FILENAME.
+
+- FILENAME filename that is stored in /tmp"
+
+  (when filename
+    (let ((temp-filename (concat "/tmp/" filename)))
+      (kill-buffer)
+      (delete-file temp-filename))))
+
 
 (provide 'casual-avy-test-utils)
 ;;; casual-avy-test-utils.el ends here

@@ -1,6 +1,6 @@
 ;;; test-casual-avy.el --- Casual Avy Tests          -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -27,67 +27,97 @@
 (require 'casual-avy-test-utils)
 (require 'casual-avy)
 
-(ert-deftest test-casual-avy-tmenu-bindings ()
-  (casualt-setup)
+(ert-deftest test-casual-avy-tmenu ()
+  (let ((tmpfile "casual-avy-tmenu.txt"))
+    (casualt-avy-setup tmpfile)
+    (cl-letf ((casualt-mock #'avy-goto-char-timer)
+              (casualt-mock #'avy-goto-char-2)
+              (casualt-mock #'avy-goto-char-2-above)
+              (casualt-mock #'avy-goto-char-2-below)
+              (casualt-mock #'avy-goto-word-1)
+              (casualt-mock #'avy-goto-word-1-above)
+              (casualt-mock #'avy-goto-word-1-below)
+              (casualt-mock #'avy-goto-symbol-1)
+              (casualt-mock #'avy-goto-symbol-1-above)
+              (casualt-mock #'avy-goto-symbol-1-below)
+              (casualt-mock #'avy-goto-whitespace-end)
+              (casualt-mock #'avy-goto-whitespace-end-above)
+              (casualt-mock #'avy-goto-whitespace-end-below)
+              (casualt-mock #'avy-pop-mark)
 
-  (let ((test-vectors (list)))
-    (push (casualt-suffix-test-vector "c" #'avy-goto-char-timer) test-vectors)
-    (push (casualt-suffix-test-vector "2" #'avy-goto-char-2) test-vectors)
-    (push (casualt-suffix-test-vector "a2" #'avy-goto-char-2-above) test-vectors)
-    (push (casualt-suffix-test-vector "b2" #'avy-goto-char-2-below) test-vectors)
-    (push (casualt-suffix-test-vector "w" #'avy-goto-word-1) test-vectors)
-    (push (casualt-suffix-test-vector "aw" #'avy-goto-word-1-above) test-vectors)
-    (push (casualt-suffix-test-vector "bw" #'avy-goto-word-1-below) test-vectors)
-    (push (casualt-suffix-test-vector "s" #'avy-goto-symbol-1) test-vectors)
-    (push (casualt-suffix-test-vector "as" #'avy-goto-symbol-1-above) test-vectors)
-    (push (casualt-suffix-test-vector "bs" #'avy-goto-symbol-1-below) test-vectors)
-    (push (casualt-suffix-test-vector "W" #'avy-goto-whitespace-end) test-vectors)
-    (push (casualt-suffix-test-vector "aW" #'avy-goto-whitespace-end-above) test-vectors)
-    (push (casualt-suffix-test-vector "bW" #'avy-goto-whitespace-end-below) test-vectors)
-    (push (casualt-suffix-test-vector "p" #'avy-pop-mark) test-vectors)
+              (casualt-mock #'avy-goto-line)
+              (casualt-mock #'avy-goto-line-above)
+              (casualt-mock #'avy-goto-line-below)
+              (casualt-mock #'avy-goto-end-of-line)
+              (casualt-mock #'goto-line)
 
-    (push (casualt-suffix-test-vector "l" #'avy-goto-line) test-vectors)
-    (push (casualt-suffix-test-vector "al" #'avy-goto-line-above) test-vectors)
-    (push (casualt-suffix-test-vector "bl" #'avy-goto-line-below) test-vectors)
-    (push (casualt-suffix-test-vector "e" #'avy-goto-end-of-line) test-vectors)
+              (casualt-mock #'avy-kill-ring-save-whole-line)
+              (casualt-mock #'avy-kill-whole-line)
+              (casualt-mock #'avy-move-line)
+              (casualt-mock #'avy-copy-line)
+              (casualt-mock #'avy-kill-ring-save-region)
+              (casualt-mock #'avy-kill-region)
+              (casualt-mock #'avy-move-region)
+              (casualt-mock #'avy-copy-region)
+              (casualt-mock #'transient-quit-all))
 
-    ;;(push (casualt-suffix-test-vector "o" #'avy-org-goto-heading-timer) test-vectors)
-    (push (casualt-suffix-test-vector "n1" #'goto-line) test-vectors)
+      (let ((test-vectors
+             '((:binding "ca" :command avy-goto-char-timer)
+               (:binding "2ab" :command avy-goto-char-2)
+               (:binding "a2ab" :command avy-goto-char-2-above)
+               (:binding "b2ab" :command avy-goto-char-2-below)
+               (:binding "wa" :command avy-goto-word-1)
+               (:binding "awa" :command avy-goto-word-1-above)
+               (:binding "bwa" :command avy-goto-word-1-below)
+               (:binding "sa" :command avy-goto-symbol-1)
+               (:binding "asa" :command avy-goto-symbol-1-above)
+               (:binding "bsa" :command avy-goto-symbol-1-below)
+               (:binding "W" :command avy-goto-whitespace-end)
+               (:binding "aW" :command avy-goto-whitespace-end-above)
+               (:binding "bW" :command avy-goto-whitespace-end-below)
+               (:binding "p" :command avy-pop-mark)
 
-    (push (casualt-suffix-test-vector "C" #'avy-kill-ring-save-whole-line) test-vectors)
-    (push (casualt-suffix-test-vector "k" #'avy-kill-whole-line) test-vectors)
-    (push (casualt-suffix-test-vector "m" #'avy-move-line) test-vectors)
-    (push (casualt-suffix-test-vector "d" #'avy-copy-line) test-vectors)
+               (:binding "l" :command avy-goto-line)
+               (:binding "al" :command avy-goto-line-above)
+               (:binding "bl" :command avy-goto-line-below)
+               (:binding "e" :command avy-goto-end-of-line)
+               (:binding "n1" :command goto-line)
 
-    (push (casualt-suffix-test-vector "r" #'avy-kill-ring-save-region) test-vectors)
-    (push (casualt-suffix-test-vector "K" #'avy-kill-region) test-vectors)
-    (push (casualt-suffix-test-vector "M" #'avy-move-region) test-vectors)
-    (push (casualt-suffix-test-vector "D" #'avy-copy-region) test-vectors)
-    (push (casualt-suffix-test-vector "" #'transient-quit-all) test-vectors)
+               (:binding "C" :command avy-kill-ring-save-whole-line)
+               (:binding "k" :command avy-kill-whole-line)
+               (:binding "m" :command avy-move-line)
+               (:binding "d" :command avy-copy-line)
+               (:binding "r" :command avy-kill-ring-save-region)
+               (:binding "K" :command avy-kill-region)
+               (:binding "M" :command avy-move-region)
+               (:binding "D" :command avy-copy-region)
+               (:binding "C-Q" :command transient-quit-all))))
 
-    (push (casualt-suffix-test-vector "," #'casual-avy-settings-tmenu) test-vectors)
+        (casualt-suffix-testcase-runner test-vectors
+                                        #'casual-avy-tmenu
+                                        '(lambda () (random 5000)))))
+    (casualt-avy-breakdown tmpfile)))
 
-    ;;(push (casualt-suffix-test-vector "t" #'avy-transpose-lines-in-region) test-vectors)
+(ert-deftest test-casual-avy-settings-tmenu ()
+  (casualt-avy-setup)
+  (cl-letf ((casualt-mock #'casual-lib-customize-casual-lib-use-unicode)
+            (casualt-mock #'casual-avy--customize-avy-group)
+            (casualt-mock #'casual-avy--customize-casual-avy-imenu-modes)
+            (casualt-mock #'casual-avy-about)
+            (casualt-mock #'casual-avy-version))
 
-    (casualt-suffix-testbench-runner test-vectors
-                                     #'casual-avy-tmenu
-                                     '(lambda () (random 5000))))
-  (casualt-breakdown t))
+    (let ((test-vectors
+           '((:binding "A" :command casual-avy--customize-avy-group)
+             (:binding "u" :command casual-lib-customize-casual-lib-use-unicode)
+             (:binding "m" :command casual-avy--customize-casual-avy-imenu-modes)
+             (:binding "a" :command casual-avy-about)
+             (:binding "v" :command casual-avy-version))))
 
-(ert-deftest test-casual-avy-settings-tmenu-bindings ()
-  (casualt-setup)
+      (casualt-suffix-testcase-runner test-vectors
+                                      #'casual-avy-settings-tmenu
+                                      '(lambda () (random 5000)))))
+  (casualt-avy-breakdown))
 
-  (let ((test-vectors (list)))
-    (push (casualt-suffix-test-vector "u" #'casual-lib-customize-casual-lib-use-unicode) test-vectors)
-    (push (casualt-suffix-test-vector "A" #'casual-avy--customize-avy-group) test-vectors)
-    (push (casualt-suffix-test-vector "m" #'casual-avy--customize-casual-avy-imenu-modes) test-vectors)
-    (push (casualt-suffix-test-vector "a" #'casual-avy-about) test-vectors)
-    (push (casualt-suffix-test-vector "v" #'casual-avy-version) test-vectors)
-
-    (casualt-suffix-testbench-runner test-vectors
-                                     #'casual-avy-settings-tmenu
-                                     '(lambda () (random 5000))))
-  (casualt-breakdown t))
 
 (ert-deftest test-casual-avy-unicode-db ()
   (let* ((item (eval (alist-get :scope casual-avy-unicode-db))))
