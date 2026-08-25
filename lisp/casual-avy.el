@@ -6,7 +6,7 @@
 ;; URL: https://github.com/kickingvegas/casual-avy
 ;; Keywords: tools
 ;; Version: 2.0.3-rc.1
-;; Package-Requires: ((emacs "29.1") (avy "0.5.0") (casual "2.0.0"))
+;; Package-Requires: ((emacs "30.1") (avy "0.5.0") (casual "3.0.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,25 +25,26 @@
 
 ;; Casual Avy is an opinionated Transient-based menu for Avy.
 
-;; INSTALLATION
-;; (require 'casual-avy) ; optional if using autoloaded menu
-;; (keymap-global-set "M-g" #'casual-avy-tmenu)
+;; INSTALL
 
-;; If you are using Emacs ≤ 30.0, you will need to update the built-in package
-;; `transient'. By default, `package.el' will not upgrade a built-in package.
-;; Set the customizable variable `package-install-upgrade-built-in' to `t' to
-;; override this. For more details, please refer to the "Install" section on
-;; this project's repository web page.
+;; Refer to “Install” section in the Casual Avy User Guide in `info' for
+;; guidance on installation and setup.
 
 ;;; Code:
 
-(require 'transient)
 (require 'avy)
 (require 'display-line-numbers)
 (require 'imenu)
 (require 'org)
 (require 'casual-lib)
-(require 'casual-avy-version)
+
+
+
+;;; Variables
+
+(defgroup casual-avy nil
+  "Settings for Casual Avy."
+  :group 'casual)
 
 (define-obsolete-variable-alias 'casual-avy-use-unicode-symbols
   'casual-lib-use-unicode
@@ -52,19 +53,24 @@
 (defcustom casual-avy-use-unicode-symbols nil
   "If non-nil then use Unicode symbols whenever appropriate for labels."
   :type 'boolean
-  :group 'avy)
+  :group 'casual-avy)
 
 (make-obsolete-variable 'casual-avy-imenu-modes nil "1.4.0")
 
 (defcustom casual-avy-imenu-modes '(prog-mode makefile-mode)
   "List of modes to enable Imenu item in `casual-avy-tmenu'."
   :type '(repeat symbol)
-  :group 'avy)
+  :group 'casual-avy)
 
-(defun casual-avy--customize-casual-avy-imenu-modes ()
-  "Customize variable `casual-avy-imenu-modes'."
-  (interactive)
-  (customize-variable 'casual-avy-imenu-modes))
+
+(defcustom casual-avy-keybinding "M-g"
+  "Keybinding for `casual-avy-tmenu'."
+  :type 'string
+  :group 'casual-avy)
+
+
+
+;;; Functions
 
 (defun casual-avy--customize-avy-group ()
   "Call the Avy customization group."
@@ -231,11 +237,15 @@ Always choose love."
   "Generate formatted Avy scope label with TEMPLATE string."
   (format template (casual-avy-unicode-get :scope)))
 
+
+
+;;; Transients
+
 ;;;###autoload (autoload 'casual-avy-init "casual-avy" nil t)
 (defun casual-avy-init ()
   "Initialize and configure Casual Avy."
   (interactive)
-  (keymap-global-set "M-g" #'casual-avy-tmenu))
+  (keymap-global-set casual-avy-keybinding #'casual-avy-tmenu))
 
 ;;;###autoload (autoload 'casual-avy-tmenu "casual-avy" nil t)
 (transient-define-prefix casual-avy-tmenu ()
@@ -320,16 +330,14 @@ Always choose love."
 
 (transient-define-prefix casual-avy-settings-tmenu ()
   ["Customize"
+   ("A" "Customize Avy Group" casual-avy--customize-avy-group)
    (casual-lib-customize-unicode)
-   (casual-lib-customize-hide-navigation)
-   ("m" "Customize Imenu Modes" casual-avy--customize-casual-avy-imenu-modes)
-   ("A" "Customize Avy Group" casual-avy--customize-avy-group)]
+   (casual-lib-customize-hide-navigation)]
 
   [:class transient-row
-          (casual-lib-quit-one)
-          ("a" "About" casual-avy-about :transient nil)
-          ("v" "Version" casual-avy-version :transient nil)
-          (casual-lib-quit-all)])
+   (casual-lib-quit-one)
+   ("a" "About" casual-avy-about :transient nil)
+   (casual-lib-quit-all)])
 
 (provide 'casual-avy)
 ;;; casual-avy.el ends here
