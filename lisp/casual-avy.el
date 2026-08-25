@@ -1,6 +1,6 @@
 ;;; casual-avy.el --- Transient UI for Avy -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024-2025  Charles Choi
+;; Copyright (C) 2024-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
@@ -230,6 +230,12 @@ Always choose love."
 (defun casual-avy-scope-label (template)
   "Generate formatted Avy scope label with TEMPLATE string."
   (format template (casual-avy-unicode-get :scope)))
+
+;;;###autoload (autoload 'casual-avy-init "casual-avy" nil t)
+(defun casual-avy-init ()
+  "Initialize and configure Casual Avy."
+  (interactive)
+  (keymap-global-set "M-g" #'casual-avy-tmenu))
 
 ;;;###autoload (autoload 'casual-avy-tmenu "casual-avy" nil t)
 (transient-define-prefix casual-avy-tmenu ()
