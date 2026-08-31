@@ -1,6 +1,6 @@
 ;;; test-casual-avy.el --- Casual Avy Tests          -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024-2025  Charles Choi
+;; Copyright (C) 2024-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -102,16 +102,13 @@
   (casualt-avy-setup)
   (cl-letf ((casualt-mock #'casual-lib-customize-casual-lib-use-unicode)
             (casualt-mock #'casual-avy--customize-avy-group)
-            (casualt-mock #'casual-avy--customize-casual-avy-imenu-modes)
             (casualt-mock #'casual-avy-about)
             (casualt-mock #'casual-avy-version))
 
     (let ((test-vectors
            '((:binding "A" :command casual-avy--customize-avy-group)
              (:binding "u" :command casual-lib-customize-casual-lib-use-unicode)
-             (:binding "m" :command casual-avy--customize-casual-avy-imenu-modes)
-             (:binding "a" :command casual-avy-about)
-             (:binding "v" :command casual-avy-version))))
+             (:binding "a" :command casual-avy-about))))
 
       (casualt-suffix-testcase-runner test-vectors
                                       #'casual-avy-settings-tmenu

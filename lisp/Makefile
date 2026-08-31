@@ -1,5 +1,5 @@
 ##
-# Copyright 2024 Charles Y. Choi
+# Copyright (C) 2024-2026 Charles Y. Choi
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,19 +14,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TIMESTAMP := $(shell /bin/date "+%Y%m%d_%H%M%S")
-
-.PHONY: tests avy-tests clean regression
-
 SRC_DIR=.
 
-tests: avy-tests
+.PHONY: tests
+tests: casual-avy-tests
 
-avy-tests:
-	$(MAKE) -C $(SRC_DIR) -f Makefile-avy.make tests
+.PHONY: casual-avy-tests
+casual-avy-tests:
+	$(MAKE) -C $(SRC_DIR) -f Makefile-casual-avy.make tests
 
-clean:
-	$(MAKE) -C $(SRC_DIR) -f Makefile-avy.make clean
+.PHONY: package-lint
+package-lint:
+	$(MAKE) -C $(SRC_DIR) -f Makefile-casual-avy.make $@
 
+.PHONY: regression
 regression:
-	$(MAKE) -C $(SRC_DIR) -f Makefile-avy.make regression
+	$(MAKE) -C $(SRC_DIR) -f Makefile-casual-avy.make $@
+
+.PHONY: clean
+clean:
+	$(MAKE) -C $(SRC_DIR) -f Makefile-casual-avy.make $@

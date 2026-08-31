@@ -1,5 +1,5 @@
 ##
-# Copyright 2024 Charles Y. Choi
+# Copyright (C) 2026 Charles Y. Choi
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,19 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-CASUAL_MAKE_HOME=$(HOME)/Projects/elisp/casual/lisp
-
-include $(CASUAL_MAKE_HOME)/Makefile--defines.make
+include Makefile--defines.make
 
 PACKAGE_NAME=casual-avy
-ELISP_INCLUDES=casual-avy-version.el
-ELISP_PACKAGES=
-ELISP_TEST_INCLUDES=casual-avy-test-utils.el
-PACKAGE_PATHS=					\
--L $(EMACS_ELPA_DIR)/compat-current		\
--L $(EMACS_ELPA_DIR)/seq-current		\
--L $(EMACS_ELPA_DIR)/transient-current		\
--L $(EMACS_ELPA_DIR)/avy-current		\
--L $(CASUAL_LIB_LISP_DIR)
 
-include $(CASUAL_MAKE_HOME)/Makefile--rules.make
+ELISP_INCLUDES=
+
+ELISP_PACKAGES=
+
+ELISP_TEST_INCLUDES=casual-avy-test-utils.el
+
+
+include Makefile--rules.make
