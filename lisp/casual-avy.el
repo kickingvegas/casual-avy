@@ -5,7 +5,7 @@
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/casual-avy
 ;; Keywords: tools
-;; Version: 2.0.3-rc.1
+;; Version: 2.0.3
 ;; Package-Requires: ((emacs "30.1") (avy "0.5.0") (casual "3.0.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
