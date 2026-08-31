@@ -14,7 +14,7 @@ Copyright © 2026 Charles Y@. Choi
 
 @dircategory Emacs misc features
 @direntry
-* casual-avy: (casual-avy). Casual Avy is a.
+* Casual Avy: (casual-avy). A Transient user interface for Avy.
 @end direntry
 
 @finalout
@@ -37,7 +37,22 @@ Version: 2.0.3-rc.1
 
 Copyright © 2026 @w{Charles Y. Choi}
 
-Hey talk about Casual Avy here.
+Casual Avy is an opinionated Transient (@ref{Top,,,transient,}) user interface for @uref{https://github.com/abo-abo/avy, Avy}@comma{} a GNU Emacs package for jumping to visible text using a character-based decision tree. Design motivations for Casual Avy are as follows:
+
+@itemize
+@item
+Bring discoverability to many Avy commands.
+@item
+Bring discoverability to many commands bound with the prefix keymap @code{M-g}.
+@itemize
+@item
+Examples include Imenu@comma{} Occur/Grep/Error navigation@comma{} line navigation.
+@end itemize
+@end itemize
+
+@image{images/casual-avy-screenshot,,,,png}
+
+Casual Avy is an extension package to Casual (@ref{Top,,,casual,})@comma{} which is included as a dependency.
 
 
 If you enjoy using Casual Avy@comma{} please buy me a coffee to help support its development and maintenance.
@@ -52,13 +67,31 @@ If you enjoy using Casual Avy@comma{} please buy me a coffee to help support its
 * Features::
 * Requirements::
 * Install::
-* Commands::
+* Usage::
 * Feedback & Discussion::
 * Sponsorship::
 * About::
 * Acknowledgments::
 * Main Index::
 * Variable Index::
+
+@detailmenu
+--- The Detailed Node Listing ---
+
+Install
+
+* Setup with Casual Suite::
+* Setup with Casual only::
+* Setup Casual Avy only::
+* Manual Install::
+
+Usage
+
+* Display Line Numbers::
+* Imenu (index) Support::
+* Org Support::
+
+@end detailmenu
 @end menu
 
 @node Features
@@ -66,37 +99,189 @@ If you enjoy using Casual Avy@comma{} please buy me a coffee to help support its
 
 @cindex Features
 
-TBD
+Casual Avy is designed to bring discoverability to many Avy commands for an enhanced navigation and editing experience.
+
+@image{images/casual-avy-screenshot,,,,png}
+
+@itemize
+@item
+Avy editing commands allow for working with a remote region or line while keeping the current point in place.
+
+@item
+Avy navigation commands allow for granular navigation to different syntactic entities (things).
+@end itemize
 
 @node Requirements
 @chapter Requirements
 
 @cindex Requirements
 
-TBD
+Casual Avy requires usage of
+@itemize
+@item
+Avy ≥ 0.5.0
+@item
+Casual ≥ 3.0.0
+@end itemize
 
-@strong{now-playing.el} requires GNU Emacs 30.1+ running on macOS 13 (Ventura) or greater.  NS support is recommended for optimal performance.
+Casual Avy has been verified with the following configuration. 
+@itemize
+@item
+GNU Emacs 31.1 (macOS 15.7@comma{} Ubuntu Linux 22.04.5 LTS)
+@item
+Avy 0.5.0
+@end itemize
 
 @node Install
 @chapter Install
 
 @cindex Install
+@vindex casual-avy-tmenu
+@vindex casual-avy-keybinding
+@vindex package-install
+@vindex casual-init-hook
+@vindex casual-init
 
-TBD
+Casual Avy is intended to be installed via @code{package-install} from MELPA@comma{} either directly or as a dependency to Casual Suite. After this installation@comma{} Casual Avy can be setup in a number of ways@comma{} as enumerated in the sub-sections below.
 
-@node Commands
-@chapter Commands
+The design intent for using Casual Avy is to setup a global keybinding to the Transient menu @code{casual-avy-tmenu}. This keybinding is specified by the customizable variable @code{casual-avy-keybinding} which is by default set to @code{M-g} and can be changed to user preference.
 
-@cindex Commands
+@menu
+* Setup with Casual Suite::
+* Setup with Casual only::
+* Setup Casual Avy only::
+* Manual Install::
+@end menu
+
+@node Setup with Casual Suite
+@section Setup with Casual Suite
+
+If you have Casual Avy installed as a dependency to Casual Suite @ref{Top,,,casual-suite,}@comma{} then Casual Suite will automatically setup Casual Avy. Refer to the Casual Suite Install Section @ref{Install,,,casual-suite,} for more detail. 
+
+Note that this will only work if Casual Avy is installed via @code{package-install}.
+
+@node Setup with Casual only
+@section Setup with Casual only
+
+Casual Avy includes the base Casual package as a dependency. Casual has the command @code{casual-init} which will setup all modules within it as specified in the hook variable @code{casual-init-hook}. Casual Avy can be included in this hook with the following Elisp added to your Emacs initialization file:
+
+@lisp
+(add-hook 'casual-init-hook #'casual-avy-init)
+@end lisp
+
+Note that this will only work if Casual Avy is installed via @code{package-install}.
+
+@node Setup Casual Avy only
+@section Setup Casual Avy only
+
+If only setup for Casual Avy is desired@comma{} then directly run the command @code{casual-avy-init}@comma{} either manually with @code{extended-execute-command} (@code{M-x}) or by adding it to your Emacs initialization file.
+
+@lisp
+(casual-avy-init)
+@end lisp
+
+Note that this will only work if Casual Avy is installed via @code{package-install}.
+
+@node Manual Install
+@section Manual Install
+
+Casual Avy is installed outside of @code{package-install}@comma{} then the 
+
+@lisp
+(require 'casual-avy) ;; optional if using autoloaded menu
+(keymap-global-set casual-avy-keybinding #'casual-avy-tmenu)
+@end lisp
+
+@node Usage
+@chapter Usage
+
+@cindex Usage
+
+@image{images/casual-avy-screenshot,,,,png}
+
+Invoke the Casual Avy menu (@code{casual-avy-tmenu}) with the keybinding @code{casual-avy-keybinding} (default @code{M-g}).
+
+The menu is grouped into the following sections:
+
+@itemize
+@item
+Scope — Set scope for Avy command to apply to either above or below the current point.
+@item
+Goto Thing — Navigate to text @emph{thing}.
+@item
+Goto Line — Navigate to a line.
+@item
+Edit Other Line — Line-based Avy editing commands.
+@item
+Edit Other Region — Region-based Avy editing commands.
+@item
+Index — Imenu and index-related commands.
+@item
+Occur/Grep/Error — Navigation commands for Occur@comma{} Grep@comma{} or Error.
+@end itemize
+
+Avy editing commands allow for editing a different line or region while @emph{keeping the point stationary}. The following glossary details the meaning of the menu labels under the @strong{Edit} sections.
+
+@table @asis
+@item Copy
+Copies the selected object (line@comma{} region) into the kill ring.
+@item Kill
+Kills the selected object into the kill ring.
+@item Move to above current line
+Moves the selected object to the line above the current point.
+@item Duplicate to above current line
+Duplicates the selected object to the line above the current point.
+@end table
+
+@menu
+* Display Line Numbers::
+* Imenu (index) Support::
+* Org Support::
+@end menu
+
+@node Display Line Numbers
+@section Display Line Numbers
+
+@image{images/casual-avy-screenshot,,,,png}
+
+If @code{display-line-numbers} is non-nil@comma{} then the menu item is displayed in the @emph{Goto Line} section:
+
+@itemize
+@item
+(n) Line Number
+@end itemize
+
+@node Imenu (index) Support
+@section Imenu (index) Support
+
+@image{images/casual-avy-org-screenshot,,,,png}
+
+The Emacs Imenu (index menu) (@ref{Imenu,,,emacs,}) feature offers a way to navigate to a major definition in a file@comma{} provided that the current mode supports it. As Imenu behavior is closely related to Avy@comma{} support for it is provided here as the menu item labeled ``(i) Index''.
+
+@node Org Support
+@section Org Support
+
+@image{images/casual-avy-org-screenshot,,,,png}
+
+If the current buffer is an Org file@comma{} then two menu items are supported:
+
+@itemize
+@item
+(o) Org heading
+@item
+(g) Org Goto…
+@end itemize
+
+Selecting ``Org heading'' will invoke the @code{avy-org-goto-heading-timer} command. Note as with all other Avy commands@comma{} this will only work with Org headings that are visible. If navigation to any Org header is desired@comma{} select ``Org Goto…'' to invoke the command @code{org-goto}.
 
 @node Feedback & Discussion
 @chapter Feedback & Discussion
 
 @cindex Feedback
-Please report any feedback about @strong{now-playing.el} to the @uref{https://github.com/kickingvegas/now-playing/issues, issue tracker on GitHub}.
+Please report any feedback about @strong{Casual Avy} to the @uref{https://github.com/kickingvegas/casual-avy/issues, issue tracker on GitHub}.
 
 @cindex Discussion
-To participate in general discussion about using @strong{now-playing.el}@comma{} please join the @uref{https://github.com/kickingvegas/now-playing/discussions, discussion group}.
+To participate in general discussion about using @strong{Casual Avy}@comma{} please join the @uref{https://github.com/kickingvegas/casual-avy/discussions, discussion group}.
 
 @node Sponsorship
 @chapter Sponsorship
@@ -114,9 +299,9 @@ If you enjoy using Casual Avy@comma{} please buy me a coffee to help support its
 
 @cindex About
 
-@uref{https://github.com/kickingvegas/now-playing, now-playing.el} was conceived and crafted by Charles Choi in San Francisco@comma{} California.
+@uref{https://github.com/kickingvegas/casual-avy, Casual Avy} was conceived and crafted by Charles Choi in San Francisco@comma{} California.
 
-Thank you for using @strong{now-playing.el}.
+Thank you for using @strong{Casual Avy}.
 
 Always choose love.
 
@@ -124,6 +309,8 @@ Always choose love.
 @chapter Acknowledgments
 
 @cindex Acknowledgments
+
+A heartfelt thanks to all the contributors to @uref{https://github.com/abo-abo/avy, Avy} and @uref{https://github.com/magit/transient, Transient}. Casual Avy would not be possible without your efforts.
 
 @node Main Index
 @chapter Main Index
